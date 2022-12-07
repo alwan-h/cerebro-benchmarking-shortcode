@@ -166,10 +166,9 @@ function createScoreItem(parent, data) {
     score += s.score;
   });
 
-  scoreItem.innerHTML =
-    `<svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 0L16.7272 14.25H0.272758L8.5 0Z" fill="#2ECC71" /></svg>` +
-    `<div style="font-size: 30px">${score}</div>` +
-    `<div>
+  scoreItem.innerHTML = `<svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 0L16.7272 14.25H0.272758L8.5 0Z" fill="#2ECC71" /></svg>
+    <div style="font-size: 30px">${score}</div>
+    <div>
       <div style="font-size:14px">${data.user.detail.city}</div>
       <div style="font-size:12px">${data.user.detail.country}</div>
     </div>`;
@@ -195,36 +194,39 @@ function createLogoView(root) {
 
 async function fetchScore(root) {
   try {
-    await fetch('./data/benchmarking.json')
+    await fetch(
+      'https://dev-api.goodcityfoundation.org/api/admin/benchmarking/data/scores'
+    )
       .then((response) => response.json())
       .then((data) => {
-        data.data.benchmarking.map((d, i) => {
-          let total = 0;
+        // data.data.benchmarking.map((d, i) => {
+        //   let total = 0;
 
-          for (let index = 0; index < d.scores.length; index++) {
-            console.log('score', d.scores[index].score);
-            total = total + d.scores[index].score;
-          }
+        //   for (let index = 0; index < d.scores.length; index++) {
+        //     console.log('score', d.scores[index].score);
+        //     total = total + d.scores[index].score;
+        //   }
 
-          let grid = document.createElement('div');
-          grid.innerHTML =
-            '<span style="font-weight:bold;font-family:sans-serif">' +
-            d.user.detail.city +
-            '</span> : ' +
-            '<span style="font-weight:bold;font-family:sans-serif">' +
-            total +
-            '</span>';
+        //   let grid = document.createElement('div');
+        //   grid.innerHTML =
+        //     '<span style="font-weight:bold;font-family:sans-serif">' +
+        //     d.user.detail.city +
+        //     '</span> : ' +
+        //     '<span style="font-weight:bold;font-family:sans-serif">' +
+        //     total +
+        //     '</span>';
 
-          root.appendChild(grid);
-          // console.log(d);
-        });
+        //   root.appendChild(grid);
+        //   // console.log(d);
+        // });
 
-        // console.log(data);
+        console.log(data);
       });
   } catch (error) {}
 }
 
 function init() {
+  fetchScore();
   createRootView();
   createScoreView(root);
   createLogoView(root);
