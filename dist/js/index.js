@@ -1,122 +1,3 @@
-let sampleData = {
-  meta: {
-    code: 200,
-    status: 'success',
-  },
-  data: {
-    benchmarking: [
-      {
-        _id: '6369f5c3861eb81e236ef602',
-        is_locked: true,
-        scores: [
-          {
-            parameter: 'Measurement of Urban Governance Wisdom',
-            score: 1.5,
-          },
-          {
-            parameter:
-              'Measurement of Digital finance inclusiveness and infrastructure',
-            score: 2,
-          },
-          {
-            parameter:
-              'Measurement of Young and Younger Generation Future Readiness',
-            score: 2,
-          },
-          {
-            parameter:
-              'Measurement of Culture Diversity, Deep-Rootedness, Food Authenticity and Heritage Sustainability',
-            score: 3.5,
-          },
-          {
-            parameter:
-              'Measurement of Food Sufficiency, Energy Circulation and Economics',
-            score: 3.5,
-          },
-        ],
-        user: {
-          _id: '6369f3b8c15c7a74d2fe9e7f',
-          created_at: '2022-11-08T06:14:16.844Z',
-          detail: {
-            city: 'Depok',
-            company_name: '',
-            country: 'Indonesia',
-            job_title: '',
-            lat: '-7.76250000',
-            lng: '110.43167000',
-            region: 'Asia',
-            roles: 'Government',
-            state: 'DI Yogyakarta',
-          },
-          email: 'fadh.dzaki@gmail.com',
-          email_verification_at: '2022-11-08T06:14:16.839Z',
-          is_invited: false,
-          is_parent: true,
-          name: 'Dzaki fadh',
-          phone: '',
-          photo:
-            'https://lh3.googleusercontent.com/a/ALm5wu36kgFJQPp0DX2d2k9kHUd3_2FQXwmsJFrqbyOVIw=s96-c',
-          updated_at: '2022-11-08T06:22:59.109Z',
-        },
-      },
-      {
-        _id: '636ec491861eb81e236ef608',
-        is_locked: false,
-        scores: [
-          {
-            parameter: 'Measurement of Urban Governance Wisdom',
-            score: 5,
-          },
-          {
-            parameter:
-              'Measurement of Digital finance inclusiveness and infrastructure',
-            score: 5,
-          },
-          {
-            parameter:
-              'Measurement of Young and Younger Generation Future Readiness',
-            score: 4,
-          },
-          {
-            parameter:
-              'Measurement of Culture Diversity, Deep-Rootedness, Food Authenticity and Heritage Sustainability',
-            score: 2.5,
-          },
-          {
-            parameter:
-              'Measurement of Food Sufficiency, Energy Circulation and Economics',
-            score: 2.5,
-          },
-        ],
-        user: {
-          _id: '63698cb3c15c7a74d2fe9e7d',
-          created_at: '2022-11-07T22:54:43.039Z',
-          detail: {
-            city: 'Mataram',
-            company_name: '',
-            country: 'Indonesia',
-            job_title: '',
-            lat: '-8.58333000',
-            lng: '116.11667000',
-            region: 'Asia',
-            roles: 'Government',
-            state: 'Nusa Tenggara Barat',
-          },
-          email: 'alwanhasmadi@gmail.com',
-          email_verification_at: '2022-11-07T22:54:43.034Z',
-          is_invited: false,
-          is_parent: true,
-          name: 'Alwan Hasmadi',
-          phone: '',
-          photo:
-            'https://lh3.googleusercontent.com/a/ALm5wu23UYBnIZa_qL-SyR0B7omhevnP1WMCOPS-NChfqQ=s96-c',
-          updated_at: '2022-11-11T21:54:25.708Z',
-        },
-      },
-    ],
-  },
-};
-
 let root = document.getElementById('cerebro-benchmarking');
 // let scoreContainer = document.createElement('div');
 
@@ -139,14 +20,14 @@ function createRootView() {
   // fetchScore(root);
 }
 
-function createScoreView(root) {
+function createScoreView(root, data) {
   let scoreContainer = document.createElement('div');
   scoreContainer.style.width = '100%';
   scoreContainer.style.display = 'flex';
   scoreContainer.style.alignItems = 'center';
   scoreContainer.style.gap = '24px';
 
-  sampleData.data.benchmarking.map((d) => {
+  data.data.benchmarking.map((d) => {
     createScoreItem(scoreContainer, d);
   });
 
@@ -192,43 +73,28 @@ function createLogoView(root) {
   root.appendChild(logoContainer);
 }
 
-async function fetchScore(root) {
-  try {
-    await fetch(
-      'https://dev-api.goodcityfoundation.org/api/admin/benchmarking/data/scores'
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        // data.data.benchmarking.map((d, i) => {
-        //   let total = 0;
-
-        //   for (let index = 0; index < d.scores.length; index++) {
-        //     console.log('score', d.scores[index].score);
-        //     total = total + d.scores[index].score;
-        //   }
-
-        //   let grid = document.createElement('div');
-        //   grid.innerHTML =
-        //     '<span style="font-weight:bold;font-family:sans-serif">' +
-        //     d.user.detail.city +
-        //     '</span> : ' +
-        //     '<span style="font-weight:bold;font-family:sans-serif">' +
-        //     total +
-        //     '</span>';
-
-        //   root.appendChild(grid);
-        //   // console.log(d);
-        // });
-
-        console.log(data);
-      });
-  } catch (error) {}
+async function fetchScores() {
+  return await fetch(
+    'https://public-api.goodcityfoundation.org/api/benchmarking/scores',
+    {
+      // mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('data', data);
+      return data;
+    });
 }
 
-function init() {
-  fetchScore();
+async function init() {
+  let dataScores = await fetchScores();
+  console.log('scores', dataScores);
   createRootView();
-  createScoreView(root);
+  createScoreView(root, dataScores);
   createLogoView(root);
 }
 
