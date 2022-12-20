@@ -25,7 +25,7 @@ function createScoreView(root, data) {
   scoreContainer.style.width = '100%';
   scoreContainer.style.display = 'flex';
   scoreContainer.style.alignItems = 'center';
-  scoreContainer.style.gap = '24px';
+  scoreContainer.style.gap = '32px';
 
   data.data.benchmarking.map((d) => {
     createScoreItem(scoreContainer, d);
@@ -48,10 +48,10 @@ function createScoreItem(parent, data) {
   });
 
   scoreItem.innerHTML = `<svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 0L16.7272 14.25H0.272758L8.5 0Z" fill="#2ECC71" /></svg>
-    <div style="font-size: 30px">${score}</div>
+    <div style="font-size: 25px">${score}</div>
     <div>
-      <div style="font-size:14px">${data.user.detail.city}</div>
-      <div style="font-size:12px">${data.user.detail.country}</div>
+      <div style="font-size:12px">${data.user.detail.city}</div>
+      <div style="font-size:10px">${data.user.detail.country}</div>
     </div>`;
 
   parent.appendChild(scoreItem);
